@@ -21,4 +21,14 @@ final class Ssr
      * @var string
      */
     public $app;
+
+    /**
+     * @var array
+     */
+    public $state = ['*'];
+
+    /**
+     * @var array
+     */
+    public $metas = [];
 }

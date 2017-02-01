@@ -8,14 +8,12 @@ use BEAR\SsrModule\Annotation\Ssr;
 class FakeRo extends ResourceObject
 {
     /**
-     * @Ssr(app="test_ssr")
+     * @Ssr(app="test_ssr", state={"name"})
      */
     public function onGet()
     {
         $this->body = [
-            'state' => [
-                'name' => 'World'
-            ]
+            'name' => 'World'
         ];
 
         return $this;
