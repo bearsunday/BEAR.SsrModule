@@ -33,13 +33,15 @@ final class SsrInterceptor implements MethodInterceptor
      */
     public function invoke(MethodInvocation $invocation)
     {
-        $annotation = $invocation->getMethod()->getAnnotation(Ssr::class);
-        /* @var $annotation Ssr */
-        $app = $annotation->app;
+        $ssr = $invocation->getMethod()->getAnnotation(Ssr::class);
+        /* @var $ssr Ssr */
+        $app = $ssr->app;
         if (is_null($app)) {
             throw new NoAppValue();
         }
-        $renderer = new SeverSideRenderer($this->baracoa, $app);
+        $state = array_values($ssr->state);
+        $metas = array_values($ssr->metas);
+        $renderer = new SeverSideRenderer($this->baracoa, $app, $state, $metas);
         $ro = $invocation->getThis();
         /* @var $ro ResourceObject */
         $ro->setRenderer($renderer);

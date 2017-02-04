@@ -25,21 +25,49 @@ final class SeverSideRenderer implements RenderInterface
     private $appName;
 
     /**
+     * @var array
+     */
+    private $stateKeys;
+
+    /**
+     * @var array
+     */
+    private $metaKeys;
+
+    /**
      * @param BaracoaInterface $baracoa
      */
-    public function __construct(BaracoaInterface $baracoa, string $appName)
+    public function __construct(BaracoaInterface $baracoa, string $appName, array $stateKeys = [], array $metasKeys = [])
     {
         $this->baracoa = $baracoa;
         $this->appName = $appName;
+        $this->stateKeys = $stateKeys;
+        $this->metaKeys = $metasKeys;
     }
 
-    public function render(ResourceObject $resourceObject)
+    public function render(ResourceObject $ro)
     {
-        $state = $resourceObject->body['state'] ?? [];
-        $metas = $resourceObject->body['metas'] ?? [];
+        $state = $this->filter($this->stateKeys, (array) $ro->body);
+        $metas = $this->filter($this->metaKeys, (array) $ro->body);
         $html = $this->baracoa->render($this->appName, $state, $metas);
-        $resourceObject->view = $html;
+        $ro->view = $html;
 
         return $html;
+    }
+
+    private function filter(array $keys, array $body) : array
+    {
+        if ($keys === ['*']) {
+            return $keys;
+        }
+        $errorKeys = array_keys(array_diff(array_values($keys), array_keys($body)));
+        if ($errorKeys) {
+            throw new \LogicException(implode(',', $errorKeys));
+        }
+        $filterd = array_filter((array)$body, function ($key) use ($keys) {
+            return in_array($key, $keys);
+        }, ARRAY_FILTER_USE_KEY);
+
+        return $filterd;
     }
 }
