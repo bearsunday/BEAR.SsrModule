@@ -86,5 +86,5 @@ public function onGet()
 `state` also works to declara of which keys are used for state. `Exception` thrown when necessary keys are not found in resource body.
 
 ```javascript
-var title = window.__SSR_METAS__.title // Age of the World
+var title = window.__SSR_METAS__.title; // Age of the World
 ```
