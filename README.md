@@ -5,7 +5,7 @@ JavaScript server side rendering (SSR) module interface for BEAR.Sunday
 ## Prerequisites
 
  * php7.1
- * [V8Js](http://php.net/v8js)
+ * [V8Js](http://php.net/v8js) (Optional)
 
 # Install
 
@@ -47,12 +47,13 @@ Annotate `@Ssr` at the method where you want to SSR. Set JS application name to 
 
 ### JS Render Application
 
-Here is a very minimalistic JS application. The resource body were passed as `window.__PRELOADED_STATE__`.
-You need to set final result string as `window.__SERVER_SIDE_MARKUP__ `.
+Here is a very minimalistic JS application. Export `render` function to render.
+Use [koriym/js-ui-skeletom](https://github.com/koriym/Koriym.JsUiSkeleton) to create Javascript UI application.
 
 ```javascript
-var name = window.__PRELOADED_STATE__.name;
-window.__SERVER_SIDE_MARKUP__ = 'Hello ' + name; // Hello World
+const render = state => (
+  `Hello ${state.name}`
+)
 ```
 
 ### State and metas
@@ -83,8 +84,19 @@ public function onGet()
 }
 ```
 
-`state` also works to declara of which keys are used for state. `Exception` thrown when necessary keys are not found in resource body.
-
+render.js
 ```javascript
-var title = window.__SSR_METAS__.title; // Age of the World
+const render = (preloadedState, metas) => {
+  return
+  `<html>
+    <head>
+      <title>${escape(metas.title)}</title>
+    </head>
+    <body>
+      <script>window.__PRELOADED_STATE__ = ${serialize(preloadedState)}</script>
+    <body>
+  </html>`
+};
+export default render;
+```
 ```
