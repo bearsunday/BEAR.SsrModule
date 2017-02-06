@@ -20,21 +20,14 @@ class SsrModule extends AbstractModule
     /**
      * @var string
      */
-    private $name;
-
-    /**
-     * @var string
-     */
     private $bundleSrcBasePath;
 
     /**
      * @param string              $bundleSrcBasePath js application directory
-     * @param string              $name              application name in formot: {$name}.bundle.js
      * @param AbstractModule|null $module            Module
      */
-    public function __construct(string $bundleSrcBasePath, string $name = '', AbstractModule $module = null)
+    public function __construct(string $bundleSrcBasePath, AbstractModule $module = null)
     {
-        $this->name = $name;
         $this->bundleSrcBasePath = $bundleSrcBasePath;
         parent::__construct($module);
     }
