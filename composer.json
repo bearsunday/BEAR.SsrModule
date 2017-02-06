@@ -1,11 +1,12 @@
 {
-    "name": "b-e-a-r/ssr-module",
-    "description": "",
+    "name": "bear/ssr-module",
+    "description": "Javascript SSR module for BEAR.Sunday",
     "keywords": [
-        "Skeleton",
-        "PSR"
+        "Javascript",
+        "SSR",
+        "V8",
+        "React"
     ],
-    "homepage": "https://github.com/koriym/Koriym.PhpSkeleton",
     "license": "MIT",
     "authors": [
         {
@@ -15,13 +16,13 @@
     "require": {
         "php": "~5.6|~7.0",
         "bear/resource": "^1.4",
-        "koriym/baracoa": "dev-master"
+        "koriym/baracoa": "1.x-dev"
     },
     "require-dev": {
-        "phpv8/v8js-stubs": "^1.2.0",
-        "phpunit/phpunit": "~4.8 || ~5.0",
-        "squizlabs/php_codesniffer": "~2.3",
-        "phpmd/phpmd": "~2.3"
+        "phpv8/v8js-stubs": "^1.3.1",
+        "phpunit/phpunit": "~4.8 || ^5.7.9 || ~6.0",
+        "squizlabs/php_codesniffer": "~2.7",
+        "phpmd/phpmd": "~2.6"
     },
     "autoload": {
         "psr-4": {
@@ -54,10 +55,5 @@
             "apigen generate -s src -d build/api",
             "@test"
         ]
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0.x-dev"
-        }
     }
 }
