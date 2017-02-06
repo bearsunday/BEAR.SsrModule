@@ -58,7 +58,9 @@ final class SeverSideRenderer implements RenderInterface
     private function filter(array $keys, array $body) : array
     {
         if ($keys === ['*']) {
-            return $keys;
+            $bodyKeys = array_values(array_keys($body));
+
+            return $bodyKeys;
         }
         $errorKeys = array_keys(array_diff(array_values($keys), array_keys($body)));
         if ($errorKeys) {
