@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare (strict_types = 1);
 
 /**
  * This file is part of the BEAR\ReactJsModule package
@@ -58,14 +58,13 @@ final class SeverSideRenderer implements RenderInterface
     private function filter(array $keys, array $body) : array
     {
         if ($keys === ['*']) {
-
             return $body;
         }
         $errorKeys = array_keys(array_diff(array_values($keys), array_keys($body)));
         if ($errorKeys) {
             throw new \LogicException(implode(',', $errorKeys));
         }
-        $filterd = array_filter((array)$body, function ($key) use ($keys) {
+        $filterd = array_filter((array) $body, function ($key) use ($keys) {
             return in_array($key, $keys);
         }, ARRAY_FILTER_USE_KEY);
 

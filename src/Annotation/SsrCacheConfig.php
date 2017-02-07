@@ -8,27 +8,11 @@ declare (strict_types = 1);
  */
 namespace BEAR\SsrModule\Annotation;
 
-use Ray\Di\Di\Qualifier;
-
 /**
  * @Annotation
  * @Target("METHOD")
  * @Qualifier
  */
-final class Ssr
+final class SsrCacheConfig
 {
-    /**
-     * @var string
-     */
-    public $app;
-
-    /**
-     * @var array
-     */
-    public $state = ['*'];
-
-    /**
-     * @var array
-     */
-    public $metas = [];
 }
