@@ -1,8 +1,8 @@
 <?php
-declare (strict_types = 1);
 
+declare(strict_types=1);
 /**
- * This file is part of the BEAR\ReactJsModule package
+ * This file is part of the BEAR.SsrModule package.
  *
  * @license http://opensource.org/licenses/MIT MIT
  */

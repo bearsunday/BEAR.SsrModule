@@ -1,10 +1,15 @@
 <?php
-
+/**
+ * This file is part of the BEAR.SsrModule package.
+ *
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 namespace BEAR\SsrModule;
 
+use PHPUnit\Framework\TestCase;
 use Ray\Di\Injector;
 
-class SsrModuleTest extends \PHPUnit_Framework_TestCase
+class SsrModuleTest extends TestCase
 {
     /**
      * @var FakeRo

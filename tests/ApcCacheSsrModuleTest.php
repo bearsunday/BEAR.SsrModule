@@ -11,11 +11,11 @@ use Koriym\Baracoa\CacheBaracoa;
 use PHPUnit\Framework\TestCase;
 use Ray\Di\Injector;
 
-class CacheSsrModuleTest extends TestCase
+class ApcCacheSsrModuleTest extends TestCase
 {
     public function testGetInstance()
     {
-        $module = new CacheSsrTestModule;
+        $module = new ApcSsrModule;
         $baracoa = (new Injector($module))->getInstance(BaracoaInterface::class);
         $this->assertInstanceOf(CacheBaracoa::class, $baracoa);
     }

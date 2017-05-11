@@ -1,5 +1,7 @@
 # BEAR.SsrModule
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bearsunday/BEAR.SsrModule/badges/quality-score.png?b=1.x)](https://scrutinizer-ci.com/g/bearsunday/BEAR.SsrModule/?branch=1.x)
+[![Code Coverage](https://scrutinizer-ci.com/g/bearsunday/BEAR.SsrModule/badges/coverage.png?b=1.x)](https://scrutinizer-ci.com/g/bearsunday/BEAR.SsrModule/?branch=1.x)
 [![Build Status](https://travis-ci.org/bearsunday/BEAR.SsrModule.svg?branch=1.x)](https://travis-ci.org/bearsunday/BEAR.SsrModule)
 
 JavaScript server side rendering (SSR) module interface for BEAR.Sunday
