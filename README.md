@@ -1,4 +1,7 @@
 # BEAR.SsrModule
+
+[![Build Status](https://travis-ci.org/bearsunday/BEAR.SsrModule.svg?branch=1.x)](https://travis-ci.org/bearsunday/BEAR.SsrModule)
+
 JavaScript server side rendering (SSR) module interface for BEAR.Sunday
 
 
