@@ -6,6 +6,6 @@
  */
 namespace BEAR\SsrModule\Exception;
 
-class NoAppValue extends \LogicException
+class NoAppValueException extends \LogicException
 {
 }

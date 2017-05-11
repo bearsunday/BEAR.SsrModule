@@ -53,7 +53,7 @@ class SsrModuleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @depends testGetInstance
-     * @expectedException \BEAR\SsrModule\Exception\NoAppValue
+     * @expectedException \BEAR\SsrModule\Exception\NoAppValueException
      */
     public function testNoAppName(FakeRo $ro)
     {
