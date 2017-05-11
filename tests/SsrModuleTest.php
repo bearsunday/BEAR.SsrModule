@@ -2,9 +2,10 @@
 
 namespace BEAR\SsrModule;
 
+use PHPUnit\Framework\TestCase;
 use Ray\Di\Injector;
 
-class SsrModuleTest extends \PHPUnit_Framework_TestCase
+class SsrModuleTest extends TestCase
 {
     /**
      * @var FakeRo

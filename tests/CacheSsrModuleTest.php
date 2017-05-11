@@ -1,13 +1,17 @@
 <?php
-
+/**
+ * This file is part of the BEAR.SsrModule package.
+ *
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 namespace BEAR\SsrModule;
 
-use Koriym\Baracoa\Baracoa;
 use Koriym\Baracoa\BaracoaInterface;
 use Koriym\Baracoa\CacheBaracoa;
+use PHPUnit\Framework\TestCase;
 use Ray\Di\Injector;
 
-class CacheSsrModuleTest extends \PHPUnit_Framework_TestCase
+class CacheSsrModuleTest extends TestCase
 {
     public function testGetInstance()
     {
