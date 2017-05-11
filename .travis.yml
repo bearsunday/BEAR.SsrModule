@@ -1,12 +1,9 @@
 language: php
+sudo: required
+dist: trusty
 php:
   - 7.1
-sudo: false
-cache:
-  directories:
-    - $HOME/.composer/cache
 env:
-  - V8VER=5.2
   matrix:
     - DEPENDENCIES=""
     - DEPENDENCIES="--prefer-lowest --prefer-stable"
