@@ -10,6 +10,8 @@ namespace BEAR\SsrModule;
 
 use BEAR\Resource\RenderInterface;
 use BEAR\Resource\ResourceObject;
+use BEAR\SsrModule\Exception\MetaKeyNotExistsException;
+use BEAR\SsrModule\Exception\StatusKeyNotExistsException;
 use Koriym\Baracoa\BaracoaInterface;
 
 final class SeverSideRenderer implements RenderInterface
@@ -47,22 +49,22 @@ final class SeverSideRenderer implements RenderInterface
 
     public function render(ResourceObject $ro)
     {
-        $state = $this->filter($this->stateKeys, (array) $ro->body);
-        $metas = $this->filter($this->metaKeys, (array) $ro->body);
+        $state = $this->filter($this->stateKeys, (array) $ro->body, StatusKeyNotExistsException::class);
+        $metas = $this->filter($this->metaKeys, (array) $ro->body, MetaKeyNotExistsException::class);
         $html = $this->baracoa->render($this->appName, $state, $metas);
         $ro->view = $html;
 
         return $html;
     }
 
-    private function filter(array $keys, array $body) : array
+    private function filter(array $keys, array $body, string $exception) : array
     {
         if ($keys === ['*']) {
             return $body;
         }
-        $errorKeys = array_keys(array_diff(array_values($keys), array_keys($body)));
+        $errorKeys = array_diff(array_values($keys), array_keys($body));
         if ($errorKeys) {
-            throw new \LogicException(implode(',', $errorKeys));
+            throw new $exception(implode(',', $errorKeys));
         }
         $filterd = array_filter((array) $body, function ($key) use ($keys) {
             return in_array($key, $keys);

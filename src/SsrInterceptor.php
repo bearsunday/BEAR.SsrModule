@@ -10,7 +10,7 @@ namespace BEAR\SsrModule;
 
 use BEAR\Resource\ResourceObject;
 use BEAR\SsrModule\Annotation\Ssr;
-use BEAR\SsrModule\Exception\NoAppValue;
+use BEAR\SsrModule\Exception\NoAppValueException;
 use Koriym\Baracoa\BaracoaInterface;
 use Koriym\Baracoa\Exception\JsFileNotExistsException;
 use Ray\Aop\MethodInterceptor;
@@ -37,7 +37,7 @@ final class SsrInterceptor implements MethodInterceptor
         /* @var $ssr Ssr */
         $app = $ssr->app;
         if (is_null($app)) {
-            throw new NoAppValue();
+            throw new NoAppValueException();
         }
         $state = array_values($ssr->state);
         $metas = array_values($ssr->metas);

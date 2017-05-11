@@ -2,50 +2,63 @@
 
 namespace BEAR\SsrModule;
 
-use Koriym\Baracoa\Baracoa;
-use Koriym\Baracoa\BaracoaInterface;
 use Ray\Di\Injector;
 
 class SsrModuleTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetInstance()
+    /**
+     * @var FakeRo
+     */
+    private $ro;
+
+    protected function setUp()
     {
         $module = new SsrModule(__DIR__ . '/Fake/build');
-        $baracoa = (new Injector($module))->getInstance(BaracoaInterface::class);
-        $this->assertInstanceOf(Baracoa::class, $baracoa);
-        $ro = (new Injector($module))->getInstance(FakeRo::class);
-        $this->assertInstanceOf(FakeRo::class, $ro);
-
-        return $ro;
+        $this->ro = (new Injector($module))->getInstance(FakeRo::class);
     }
 
-    /**
-     * @depends testGetInstance
-     */
-    public function testInvoke(FakeRo $ro)
+    public function testInvoke()
     {
-        $ro->onGet();
-        $html = (string) $ro;
+        $this->ro->onGet();
+        $html = $this->ro->toString();
         $this->assertSame('Hello World', $html);
     }
 
     /**
-     * @depends testGetInstance
      * @expectedException \Koriym\Baracoa\Exception\JsFileNotExistsException
      */
-    public function testInvalidAppName(FakeRo $ro)
+    public function testInvalidAppName()
     {
-        $ro->onInvalidApp();
-        $ro->toString();
+        $this->ro->onInvalidApp();
+        $this->ro->toString();
     }
 
     /**
-     * @depends testGetInstance
-     * @expectedException \BEAR\SsrModule\Exception\NoAppValue
+     * @expectedException \BEAR\SsrModule\Exception\NoAppValueException
      */
-    public function testNoAppName(FakeRo $ro)
+    public function testNoAppName()
     {
-        $ro->onNoApp();
-        $ro->toString();
+        $this->ro->onNoApp();
+        $this->ro->toString();
+    }
+
+    /**
+     * @expectedException \BEAR\SsrModule\Exception\StatusKeyNotExistsException
+     */
+    public function testNoStatusException()
+    {
+        $this->ro->onGet();
+        $this->ro->body = ['title' => 'exsits'];
+        $this->ro->toString();
+    }
+
+    /**
+     * @expectedException \BEAR\SsrModule\Exception\MetaKeyNotExistsException
+     */
+    public function testMetaStatusNotExistsException()
+    {
+        $this->ro->onGet();
+        $this->ro->body = ['name' => 'exsits'];
+        $this->ro->toString();
     }
 }
