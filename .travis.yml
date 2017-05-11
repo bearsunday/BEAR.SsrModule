@@ -11,14 +11,13 @@ before_install:
   - make -f Makefile.travis before_install
 install:
   - make -f Makefile.travis install
-  - pecl install apcu-5.1.8
   - phpenv config-add tests/apc.ini
   - php -i | grep 'apc'
 before_script:
   - composer self-update
   - composer update $DEPENDENCIES
 script:
-  - php -d apc.enable_cli=1 vendor/bin/phpunit --coverage-clover=coverage.clover;
+  - vendor/bin/phpunit --coverage-clover=coverage.clover;
   - if [ "$TRAVIS_PHP_VERSION" = "7.1" ]; then wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar && php php-cs-fixer-v2.phar fix --config=.php_cs -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $TRAVIS_COMMIT_RANGE`; fi
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
