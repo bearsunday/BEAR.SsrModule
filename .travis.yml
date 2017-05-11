@@ -11,9 +11,9 @@ before_install:
   - make -f Makefile.travis before_install
 install:
   - make -f Makefile.travis install
+before_script:
   - phpenv config-add tests/apc.ini
   - php -i | grep 'apc'
-before_script:
   - composer self-update
   - composer update $DEPENDENCIES
 script:
