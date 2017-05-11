@@ -11,6 +11,9 @@ before_install:
   - make -f Makefile.travis before_install
 install:
   - make -f Makefile.travis install
+  - pecl install apcu-5.1.8
+  - phpenv config-add tests/apc.ini
+  - php -i | grep 'apc'
 before_script:
   - composer self-update
   - composer update $DEPENDENCIES
