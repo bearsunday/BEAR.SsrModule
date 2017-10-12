@@ -46,10 +46,11 @@ class SsrModule extends AbstractModule
             $this->matcher->annotatedWith(Ssr::class),
             [SsrInterceptor::class]
         );
-        $this->bind(\V8Js::class)->toConstructor(\V8Js::class, 'object_name=v8js_object_name,variables=v8js_variables,extensions=v8js_extensions,snapshot_blob=v8js_snapshot_blob');
+        $this->bind(\V8Js::class)->toConstructor(\V8Js::class, 'object_name=v8js_object_name,variables=v8js_variables,extensions=v8js_extensions,report_uncaught_exceptions=v8_report_uncaught_exceptions,snapshot_blob=v8js_snapshot_blob');
         $this->bind()->annotatedWith('v8js_object_name')->toInstance('');
         $this->bind()->annotatedWith('v8js_variables')->toInstance([]);
         $this->bind()->annotatedWith('v8js_extensions')->toInstance([]);
+        $this->bind()->annotatedWith('v8_report_uncaught_exceptions')->toInstance(true);
         $this->bind()->annotatedWith('v8js_snapshot_blob')->toInstance('');
     }
 }
