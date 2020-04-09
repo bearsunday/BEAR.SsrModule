@@ -5,7 +5,7 @@ export NO_INTERACTION=1
 export REPORT_EXIT_STATUS=1
 
 before_install:
-	sudo add-apt-repository ppa:pinepain/libv8-$(V8VER)-archived -y
+	sudo add-apt-repository ppa:pinepain/libv8-archived -y
 	sudo apt-get update -q
 install:
 	sudo apt-get install -y libv8-$(V8VER)-dev
