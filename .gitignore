@@ -11,3 +11,4 @@ build
 phpunit.xml
 composer.lock
 vendor/
+/.phpunit.result.cache
