@@ -1,34 +1,25 @@
 <?php
 
 declare(strict_types=1);
-/**
- * This file is part of the BEAR.SsrModule package.
- *
- * @license http://opensource.org/licenses/MIT MIT
- */
+
 namespace BEAR\SsrModule\Annotation;
 
+use Attribute;
 use Ray\Di\Di\Qualifier;
 
-/**
- * @Annotation
- * @Target("METHOD")
- * @Qualifier
- */
+#[Attribute(Attribute::TARGET_METHOD)]
+#[Qualifier]
 final class Ssr
 {
     /**
-     * @var string
+     * @param string|null   $app   App name
+     * @param array<string> $state State keys in body
+     * @param array<string> $metas Meta keys in body
      */
-    public $app;
-
-    /**
-     * @var array
-     */
-    public $state = ['*'];
-
-    /**
-     * @var array
-     */
-    public $metas = [];
+    public function __construct(
+        public readonly ?string $app = null,
+        public readonly array $state = ['*'],
+        public readonly array $metas = [],
+    ) {
+    }
 }

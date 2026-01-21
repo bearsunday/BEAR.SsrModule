@@ -1,11 +1,7 @@
 <?php
 
 declare(strict_types=1);
-/**
- * This file is part of the BEAR.SsrModule package.
- *
- * @license http://opensource.org/licenses/MIT MIT
- */
+
 namespace BEAR\SsrModule;
 
 use BEAR\Resource\RenderInterface;
@@ -13,63 +9,56 @@ use BEAR\Resource\ResourceObject;
 use BEAR\SsrModule\Exception\MetaKeyNotExistsException;
 use BEAR\SsrModule\Exception\StatusKeyNotExistsException;
 use Koriym\Baracoa\BaracoaInterface;
+use LogicException;
 
 final class Ssr implements RenderInterface
 {
     /**
-     * @var BaracoaInterface
+     * @param BaracoaInterface $baracoa   Baracoa instance
+     * @param string           $appName   App name
+     * @param array<string>    $stateKeys State keys in body
+     * @param array<string>    $metaKeys  Meta keys in body
      */
-    private $baracoa;
-
-    /**
-     * @var string
-     */
-    private $appName;
-
-    /**
-     * @var array
-     */
-    private $stateKeys;
-
-    /**
-     * @var array
-     */
-    private $metaKeys;
-
-    /**
-     * @param BaracoaInterface $baracoa
-     */
-    public function __construct(BaracoaInterface $baracoa, string $appName, array $stateKeys = [], array $metasKeys = [])
-    {
-        $this->baracoa = $baracoa;
-        $this->appName = $appName;
-        $this->stateKeys = $stateKeys;
-        $this->metaKeys = $metasKeys;
+    public function __construct(
+        private readonly BaracoaInterface $baracoa,
+        private readonly string $appName,
+        private readonly array $stateKeys = [],
+        private readonly array $metaKeys = [],
+    ) {
     }
 
-    public function render(ResourceObject $ro)
+    public function render(ResourceObject $ro): string
     {
-        $state = $this->filter($this->stateKeys, (array) $ro->body, StatusKeyNotExistsException::class);
-        $metas = $this->filter($this->metaKeys, (array) $ro->body, MetaKeyNotExistsException::class);
+        /** @var array<string, mixed> $body */
+        $body = (array) $ro->body;
+        $state = $this->filter($this->stateKeys, $body, StatusKeyNotExistsException::class);
+        $metas = $this->filter($this->metaKeys, $body, MetaKeyNotExistsException::class);
         $html = $this->baracoa->render($this->appName, $state, $metas);
         $ro->view = $html;
 
         return $html;
     }
 
-    private function filter(array $keys, array $body, string $exception) : array
+    /**
+     * @param array<string>                $keys      Keys to filter
+     * @param array<string, mixed>         $body      Body array
+     * @param class-string<LogicException> $exception Exception class
+     *
+     * @return array<string, mixed>
+     *
+     * @throws LogicException
+     */
+    private function filter(array $keys, array $body, string $exception): array
     {
         if ($keys === ['*']) {
             return $body;
         }
+
         $errorKeys = array_diff(array_values($keys), array_keys($body));
-        if ($errorKeys) {
+        if ($errorKeys !== []) {
             throw new $exception(implode(',', $errorKeys));
         }
-        $filterd = array_filter((array) $body, function ($key) use ($keys) {
-            return in_array($key, $keys, true);
-        }, ARRAY_FILTER_USE_KEY);
 
-        return $filterd;
+        return array_filter($body, static fn(string $key): bool => in_array($key, $keys, true), ARRAY_FILTER_USE_KEY);
     }
 }

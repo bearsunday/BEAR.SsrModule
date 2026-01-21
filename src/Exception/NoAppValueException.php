@@ -1,11 +1,11 @@
 <?php
-/**
- * This file is part of the BEAR.SsrModule package.
- *
- * @license http://opensource.org/licenses/MIT MIT
- */
+
+declare(strict_types=1);
+
 namespace BEAR\SsrModule\Exception;
 
-class NoAppValueException extends \LogicException
+use LogicException;
+
+class NoAppValueException extends LogicException
 {
 }

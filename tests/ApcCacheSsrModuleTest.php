@@ -1,9 +1,7 @@
 <?php
-/**
- * This file is part of the BEAR.SsrModule package.
- *
- * @license http://opensource.org/licenses/MIT MIT
- */
+
+declare(strict_types=1);
+
 namespace BEAR\SsrModule;
 
 use Koriym\Baracoa\BaracoaInterface;
@@ -13,9 +11,9 @@ use Ray\Di\Injector;
 
 class ApcCacheSsrModuleTest extends TestCase
 {
-    public function testGetInstance()
+    public function testGetInstance(): void
     {
-        $module = new ApcSsrModule;
+        $module = new ApcSsrModule();
         $baracoa = (new Injector($module))->getInstance(BaracoaInterface::class);
         $this->assertInstanceOf(CacheBaracoa::class, $baracoa);
     }

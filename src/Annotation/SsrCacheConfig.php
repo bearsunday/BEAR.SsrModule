@@ -1,18 +1,14 @@
 <?php
 
 declare(strict_types=1);
-/**
- * This file is part of the BEAR.SsrModule package.
- *
- * @license http://opensource.org/licenses/MIT MIT
- */
+
 namespace BEAR\SsrModule\Annotation;
 
-/**
- * @Annotation
- * @Target("METHOD")
- * @Qualifier
- */
+use Attribute;
+use Ray\Di\Di\Qualifier;
+
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PARAMETER)]
+#[Qualifier]
 final class SsrCacheConfig
 {
 }
