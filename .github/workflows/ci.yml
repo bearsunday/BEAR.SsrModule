@@ -65,7 +65,7 @@ jobs:
         run: composer install --no-progress
 
       - name: Run PHP_CodeSniffer
-        run: ./vendor/bin/phpcs
+        run: ./vendor/bin/phpcs src tests
 
   v8js-test:
     name: PHPUnit with V8Js (Docker)
@@ -82,6 +82,11 @@ jobs:
         run: |
           apt-get update
           apt-get install -y unzip git
+
+      - name: Install APCu extension
+        run: |
+          pecl install apcu
+          docker-php-ext-enable apcu
 
       - name: Install Composer
         run: |
