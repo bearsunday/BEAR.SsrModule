@@ -8,9 +8,11 @@ use BEAR\SsrModule\Exception\MetaKeyNotExistsException;
 use BEAR\SsrModule\Exception\NoAppValueException;
 use BEAR\SsrModule\Exception\StatusKeyNotExistsException;
 use Koriym\Baracoa\Exception\JsFileNotExistsException;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Ray\Di\Injector;
 
+#[Group('v8js')]
 class SsrModuleTest extends TestCase
 {
     private FakeRo $ro;

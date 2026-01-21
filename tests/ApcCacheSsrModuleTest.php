@@ -6,9 +6,11 @@ namespace BEAR\SsrModule;
 
 use Koriym\Baracoa\BaracoaInterface;
 use Koriym\Baracoa\CacheBaracoa;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Ray\Di\Injector;
 
+#[Group('v8js')]
 class ApcCacheSsrModuleTest extends TestCase
 {
     public function testGetInstance(): void
