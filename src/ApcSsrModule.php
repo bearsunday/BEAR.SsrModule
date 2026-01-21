@@ -13,6 +13,13 @@ use Symfony\Component\Cache\Psr16Cache;
 
 class ApcSsrModule extends AbstractModule
 {
+    public function __construct(
+        private readonly string $bundleSrcBasePath,
+        ?AbstractModule $module = null,
+    ) {
+        parent::__construct($module);
+    }
+
     protected function configure(): void
     {
         $this->bind(CacheItemPoolInterface::class)->annotatedWith('ssr_cache_pool')->to(ApcuAdapter::class);
@@ -21,6 +28,6 @@ class ApcSsrModule extends AbstractModule
             'pool=ssr_cache_pool',
         );
         $this->install(new CacheSsrModule());
-        $this->install(new SsrModule(__DIR__ . '/Fake/build'));
+        $this->install(new SsrModule($this->bundleSrcBasePath));
     }
 }

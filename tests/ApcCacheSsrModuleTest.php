@@ -13,7 +13,7 @@ class ApcCacheSsrModuleTest extends TestCase
 {
     public function testGetInstance(): void
     {
-        $module = new ApcSsrModule();
+        $module = new ApcSsrModule(__DIR__ . '/Fake/build');
         $baracoa = (new Injector($module))->getInstance(BaracoaInterface::class);
         $this->assertInstanceOf(CacheBaracoa::class, $baracoa);
     }
