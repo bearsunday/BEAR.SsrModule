@@ -5,10 +5,19 @@
 
 JavaScript server side rendering (SSR) module for BEAR.Sunday
 
+## When to Use This Module
+
+Today, dedicated JavaScript frameworks like Next.js, Nuxt.js, and Remix provide excellent SSR capabilities. However, this module remains valuable when:
+
+- You want to add SSR to an existing BEAR.Sunday application without migrating to a JavaScript framework
+- Your team's primary expertise is PHP, and you want to keep the server-side stack unified
+- You need fine-grained control over which resource methods use SSR via the `#[Ssr]` attribute
+
 ## Prerequisites
 
  * PHP 8.2+
- * [V8Js](http://php.net/v8js) (Optional for development, required for SSR execution)
+ * Node.js (for SSR execution)
+ * [V8Js](http://php.net/v8js) (Optional - for embedded execution without process overhead)
 
 ## Install
 
@@ -121,3 +130,14 @@ $this->bind(CacheInterface::class)
 $this->install(new CacheSsrModule());
 $this->install(new SsrModule($buildDir));
 ```
+
+## JavaScript Runtime
+
+This module uses [koriym/baracoa](https://github.com/koriym/Koriym.Baracoa) for JavaScript execution, which supports two runtimes:
+
+| Runtime | Pros | Cons |
+|---------|------|------|
+| **Node.js** (default) | No PHP extension required, easy deployment | Process spawn overhead per render |
+| **V8Js** | Embedded execution, no process overhead | Requires PHP extension installation |
+
+Node.js is used automatically when V8Js is not available. For high-traffic production environments, consider installing V8Js for better performance.
