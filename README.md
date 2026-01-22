@@ -3,15 +3,15 @@
 [![CI](https://github.com/bearsunday/BEAR.SsrModule/actions/workflows/ci.yml/badge.svg)](https://github.com/bearsunday/BEAR.SsrModule/actions/workflows/ci.yml)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bearsunday/BEAR.SsrModule/badges/quality-score.png?b=1.x)](https://scrutinizer-ci.com/g/bearsunday/BEAR.SsrModule/?branch=1.x)
 
-JavaScript server side rendering (SSR) module for BEAR.Sunday
+JavaScript view layer for BEAR.Sunday
+
+This module enables you to write views in JavaScript while keeping your application logic in PHP. The JavaScript templates are executed server-side (SSR) for initial rendering and can hydrate on the client for interactivity.
 
 ## When to Use This Module
 
-Today, dedicated JavaScript frameworks like Next.js, Nuxt.js, and Remix provide excellent SSR capabilities. However, this module remains valuable when:
-
-- You want to add SSR to an existing BEAR.Sunday application without migrating to a JavaScript framework
-- Your team's primary expertise is PHP, and you want to keep the server-side stack unified
-- You need fine-grained control over which resource methods use SSR via the `#[Ssr]` attribute
+- You want to write views in JavaScript (React, Vue, etc.) within a PHP application
+- You prefer to keep server-side application logic in BEAR.Sunday while using JavaScript for UI
+- You need both server-side rendering and client-side hydration with the same view code
 
 ## Prerequisites
 
