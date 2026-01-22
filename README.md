@@ -144,4 +144,4 @@ Node.js is used automatically when V8Js is not available.
 
 ### Performance Note
 
-When combined with BEAR.Sunday's event-driven caching (DonutCache with TTL=0), the Node.js process overhead becomes negligible. The rendered HTML is cached indefinitely and invalidated only when the underlying data changes, so JavaScript execution occurs only on cache misses.
+When using event-driven caching with TTL=0 (cache invalidated by events rather than time), the Node.js process overhead becomes negligible. The rendered HTML is cached indefinitely and invalidated only when the underlying data changes, so JavaScript execution occurs only on cache misses.
