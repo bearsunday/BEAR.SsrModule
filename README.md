@@ -1,22 +1,20 @@
 # BEAR.SsrModule
 
+[![CI](https://github.com/bearsunday/BEAR.SsrModule/actions/workflows/ci.yml/badge.svg)](https://github.com/bearsunday/BEAR.SsrModule/actions/workflows/ci.yml)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bearsunday/BEAR.SsrModule/badges/quality-score.png?b=1.x)](https://scrutinizer-ci.com/g/bearsunday/BEAR.SsrModule/?branch=1.x)
-[![Code Coverage](https://scrutinizer-ci.com/g/bearsunday/BEAR.SsrModule/badges/coverage.png?b=1.x)](https://scrutinizer-ci.com/g/bearsunday/BEAR.SsrModule/?branch=1.x)
-[![Build Status](https://travis-ci.org/bearsunday/BEAR.SsrModule.svg?branch=1.x)](https://travis-ci.org/bearsunday/BEAR.SsrModule)
 
-JavaScript server side rendering (SSR) module interface for BEAR.Sunday
-
+JavaScript server side rendering (SSR) module for BEAR.Sunday
 
 ## Prerequisites
 
- * php7.1
- * [V8Js](http://php.net/v8js) (Optional)
+ * PHP 8.2+
+ * [V8Js](http://php.net/v8js) (Optional for development, required for SSR execution)
 
-# Install
+## Install
 
 ### Composer Install
 
-```
+```bash
 composer require bear/ssr-module
 ```
 
@@ -24,36 +22,35 @@ composer require bear/ssr-module
 
 ```php
 $buildDir = dirname(__DIR__, 2) . '/var/www/build';
-$this->install(new SsrModule($buildDir, 'index_ssr');
+$this->install(new SsrModule($buildDir));
 ```
 
-In this canse, you need to place `index_ssr.bundle.js` file at `$baseDir` directory. This JS is used server side rendring (SSR) only.
+Place your `{app}.bundle.js` file in the `$buildDir` directory. This JS is used for server side rendering (SSR) only.
 
-## @Ssr Annotation
-
+## #[Ssr] Attribute
 
 ### Basic
 
 ```php
-/**
- * @Ssr(app="index_ssr")
- */
-public function onGet()
-{ 
+use BEAR\SsrModule\Annotation\Ssr;
+
+#[Ssr(app: 'index_ssr')]
+public function onGet(): static
+{
     $this->body = [
-        'name' => 'World'
+        'name' => 'World',
     ];
 
     return $this;
 }
 ```
 
-Annotate `@Ssr` at the method where you want to SSR. Set JS application name to `app`.
+Add the `#[Ssr]` attribute to methods where you want SSR. Set the JS application name with `app`.
 
 ### JS Render Application
 
-Here is a very minimalistic JS application. Export `render` function to render.
-Use [koriym/js-ui-skeletom](https://github.com/koriym/Koriym.JsUiSkeleton) to create Javascript UI application.
+Here is a minimalistic JS application. Export a `render` function.
+Use [koriym/js-ui-skeleton](https://github.com/koriym/Koriym.JsUiSkeleton) to create a JavaScript UI application.
 
 ```javascript
 const render = state => (
@@ -61,47 +58,66 @@ const render = state => (
 )
 ```
 
-### State and metas
+### State and Metas
 
-In SSR application, you sometime want to deal two kind of data.
-One is for client side which means you are OK to be a public in HTML. One is server side only.
+In SSR applications, you may need two kinds of data:
+- `state`: Public data sent to the client (included in HTML)
+- `metas`: Server-side only data
 
-You can separate `state` and `meta` data by custom attribute in `@Ssr` annotation.
-`metas` are only used in server side.
+Separate them using the `state` and `metas` parameters in the `#[Ssr]` attribute:
 
 ```php
-/**
- * @Ssr(
- *   app="index_ssr",
- *   state={"name", "age"},
- *   meta={"title"}
- * )
- */
-public function onGet()
-{ 
+use BEAR\SsrModule\Annotation\Ssr;
+
+#[Ssr(app: 'index_ssr', state: ['name', 'age'], metas: ['title'])]
+public function onGet(): static
+{
     $this->body = [
         'name' => 'World',
-        'age' => 4.6E8;
-        'title' => 'Age of the World'
+        'age' => 4.6E8,
+        'title' => 'Age of the World',
     ];
 
     return $this;
 }
 ```
 
-render.js
+render.js:
+
 ```javascript
 const render = (preloadedState, metas) => {
-  return
-  `<html>
+  return `<html>
     <head>
       <title>${escape(metas.title)}</title>
     </head>
     <body>
       <script>window.__PRELOADED_STATE__ = ${serialize(preloadedState)}</script>
-    <body>
-  </html>`
+    </body>
+  </html>`;
 };
 export default render;
 ```
+
+## Cache Modules
+
+For production, use cache modules to improve performance:
+
+### APCu Cache
+
+```php
+$this->install(new ApcSsrModule($buildDir));
+```
+
+### Custom Cache
+
+```php
+use BEAR\SsrModule\Annotation\SsrCacheConfig;
+use Psr\SimpleCache\CacheInterface;
+
+// Bind your PSR-16 cache implementation
+$this->bind(CacheInterface::class)
+    ->annotatedWith(SsrCacheConfig::class)
+    ->to(YourCacheImplementation::class);
+$this->install(new CacheSsrModule());
+$this->install(new SsrModule($buildDir));
 ```
