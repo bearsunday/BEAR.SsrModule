@@ -140,4 +140,8 @@ This module uses [koriym/baracoa](https://github.com/koriym/Koriym.Baracoa) for 
 | **Node.js** (default) | No PHP extension required, easy deployment | Process spawn overhead per render |
 | **V8Js** | Embedded execution, no process overhead | Requires PHP extension installation |
 
-Node.js is used automatically when V8Js is not available. For high-traffic production environments, consider installing V8Js for better performance.
+Node.js is used automatically when V8Js is not available.
+
+### Performance Note
+
+When combined with BEAR.Sunday's event-driven caching (DonutCache with TTL=0), the Node.js process overhead becomes negligible. The rendered HTML is cached indefinitely and invalidated only when the underlying data changes, so JavaScript execution occurs only on cache misses.
