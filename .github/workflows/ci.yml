@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  push:
+    branches: [ 1.x ]
+  pull_request:
+    branches: [ 1.x ]
+  workflow_dispatch:
+
+jobs:
+  phpunit:
+    name: PHPUnit (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.2', '8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          extensions: apcu
+          ini-values: apc.enable_cli=1
+
+      - name: Install dependencies
+        run: composer install --no-progress
+
+      - name: Run PHPUnit
+        run: ./vendor/bin/phpunit --exclude-group=v8js
+
+  static-analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --no-progress
+
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse
+
+  coding-standards:
+    name: Coding Standards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --no-progress
+
+      - name: Run PHP_CodeSniffer
+        run: ./vendor/bin/phpcs src tests
+
+  v8js-test:
+    name: PHPUnit with V8Js (Docker)
+    runs-on: ubuntu-latest
+    container:
+      image: interposition/8.4.14-fpm-trixie-v8js:v1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify V8Js
+        run: php -m | grep v8js
+
+      - name: Install system dependencies
+        run: |
+          apt-get update
+          apt-get install -y unzip git $PHPIZE_DEPS
+
+      - name: Install APCu extension
+        run: |
+          pecl install apcu
+          docker-php-ext-enable apcu
+          php -m | grep apcu
+
+      - name: Install Composer
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+          php -r "unlink('composer-setup.php');"
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress
+
+      - name: Run PHPUnit
+        run: php -d apc.enable_cli=1 ./vendor/bin/phpunit

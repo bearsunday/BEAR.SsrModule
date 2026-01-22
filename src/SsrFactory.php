@@ -1,31 +1,25 @@
 <?php
 
 declare(strict_types=1);
-/**
- * This file is part of the BEAR.SsrModule package.
- *
- * @license http://opensource.org/licenses/MIT MIT
- */
+
 namespace BEAR\SsrModule;
 
+use BEAR\Resource\RenderInterface;
 use Koriym\Baracoa\BaracoaInterface;
 
 final class SsrFactory implements SsrFactoryInterface
 {
-    /**
-     * @var BaracoaInterface
-     */
-    private $baracoa;
-
-    public function __construct(BaracoaInterface $baracoa)
-    {
-        $this->baracoa = $baracoa;
+    public function __construct(
+        private readonly BaracoaInterface $baracoa,
+    ) {
     }
 
     /**
-     * [@inheritdoc}
+     * @param string        $appName   UI application name
+     * @param array<string> $stateKeys State keys in body
+     * @param array<string> $metasKeys Meta keys in body
      */
-    public function newInstance(string $appName, array $stateKeys = [], array $metasKeys = [])
+    public function newInstance(string $appName, array $stateKeys = [], array $metasKeys = []): RenderInterface
     {
         return new Ssr($this->baracoa, $appName, $stateKeys, $metasKeys);
     }
