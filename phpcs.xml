@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
-<ruleset>
-    <!-- 2. General -->
+<ruleset name="BEAR.SsrModule">
+    <file>src</file>
+    <file>tests</file>
+
+    <!-- General -->
     <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
     <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
     <rule ref="Generic.Strings.UnnecessaryStringConcat"/>
